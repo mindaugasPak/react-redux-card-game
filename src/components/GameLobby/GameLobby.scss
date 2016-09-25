@@ -1,0 +1,55 @@
+.Lobby {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.LobbyVersus {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 auto;
+  padding: 20px;
+  height: 70%;
+}
+
+.LobbyPlayer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  width: 30%;
+  height: 500px;
+  background: #ebebeb;
+}
+
+.LobbyAvatar {
+  width: 100px;
+  height: 100px;
+  background: orange;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.LobbyPlayerName {
+  font-size: 2em;
+}
+
+.LobbyReadyWrapper {
+  width: 100%;
+  text-align: center;
+}
+
+.LobbyReadyButton {
+  width: 200px;
+  height: 45px;
+  background: orange;
+  color: #ffffff;
+  font-size: 1.2em;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
