@@ -7,6 +7,7 @@ export CustomDragLayer from './CustomDragLayer/CustomDragLayer';
 export DraggableCard from './DraggableCard/DraggableCard';
 export DraggableMinion from './DraggableMinion/DraggableMinion';
 export MinionDropTarget from './MinionDropTarget/MinionDropTarget';
+export NewPlayerForm from './NewPlayerForm/NewPlayerForm';
 export Root from './Root/Root';
 export TargetableHero from './TargetableHero/TargetableHero';
 export TargetableMinion from './TargetableMinion/TargetableMinion';
