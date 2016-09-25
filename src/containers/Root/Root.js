@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
 import { App, DevTools } from 'containers';
-import { StartScreen, GameNewScreen, GameScreen } from 'views';
+import { GameLobbyScreen, GameNewScreen, GameScreen, StartScreen } from 'views';
 import sharedStyles from 'components/shared/styles.scss';
 
 export default class Root extends Component {
@@ -36,7 +36,10 @@ export default class Root extends Component {
               <IndexRoute component={StartScreen} />
               <Route path="game">
                 <Route path="new" component={this.withSocket(GameNewScreen)} />
-                <Route path=":id" component={GameScreen} />
+                <Route path=":id">
+                  <IndexRoute component={GameScreen} />
+                  <Route path="lobby" component={GameLobbyScreen} />
+                </Route>
               </Route>
             </Route>
           </Router>
