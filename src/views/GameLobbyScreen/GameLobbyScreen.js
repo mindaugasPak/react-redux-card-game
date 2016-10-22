@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 
+import { withSocket } from 'hoc';
 import { GameLobby } from 'components';
 import { toggleReady } from 'redux/modules/ready';
+import { updateHasOpponent } from 'redux/modules/currentGame';
 
 export class GameLobbyScreen extends Component {
   static propTypes = {
@@ -17,7 +19,12 @@ export class GameLobbyScreen extends Component {
     hasOpponent: PropTypes.bool.isRequired,
     actions: PropTypes.shape({
       toggleReady: PropTypes.func.isRequired,
+      updateHasOpponent: PropTypes.func.isRequired,
     }),
+    socket: PropTypes.shape({
+      emit: PropTypes.func.isRequired,
+      on: PropTypes.func.isRequired,
+    }).isRequired,
   };
 
   toggleReadyForPlayer = () => this.props.actions.toggleReady({ target: 'PLAYER' });
@@ -34,7 +41,10 @@ const mapStateToProps = ({ player, opponent, currentGame: { gameId, hasOpponent 
   hasOpponent,
 });
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ toggleReady }, dispatch),
+  actions: bindActionCreators({ toggleReady, updateHasOpponent }, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameLobbyScreen);
+export default compose(
+  withSocket,
+  connect(mapStateToProps, mapDispatchToProps)
+)(GameLobbyScreen);

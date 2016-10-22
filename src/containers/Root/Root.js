@@ -3,13 +3,14 @@ import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
 import { App, DevTools, SocketProvider } from 'containers';
-import { withSocket } from 'hoc';
-import { GameLobbyScreen, GameNewScreen, GameScreen, StartScreen } from 'views';
+import { GameLobbyScreen, GameScreen, StartScreen } from 'views';
+import { fetchNewGame, joinGame } from 'redux/modules/currentGame';
 import sharedStyles from 'components/shared/styles.scss';
 
 export default class Root extends Component {
   static propTypes = {
     store: PropTypes.shape({
+      dispatch: PropTypes.func.isRequired,
       getState: PropTypes.func.isRequired,
     }).isRequired,
     socket: PropTypes.shape({
@@ -17,12 +18,7 @@ export default class Root extends Component {
     }).isRequired,
   }
 
-  constructor(props) {
-    super(props);
-    this.requireName = this.requireName.bind(this);
-  }
-
-  requireName(nextState, replace) {
+  requireName = (nextState, replace) => {
     const { name } = this.props.store.getState().player;
 
     if (!name) {
@@ -31,6 +27,35 @@ export default class Root extends Component {
         query: { ref: nextState.location.pathname },
       });
     }
+  }
+
+  redirectToLobby = (replace, id) => {
+    replace(`/game/${id}/lobby`);
+  }
+
+  redirectIfNoGameId = (nextState, replace) => {
+    const { gameId } = this.props.store.getState().currentGame;
+
+    if (!gameId) {
+      replace('/');
+    }
+  }
+
+  createGameAndRedirect = (nextState, replace, callback) => {
+    this.props.store.dispatch(fetchNewGame(true)).then((gameId) => {
+      this.redirectToLobby(replace, gameId);
+      callback();
+    }).catch((e) => {
+      console.log(e);
+      replace('/');
+    });
+  }
+
+  joinGameAndRedirect = (nextState, replace) => {
+    const { id } = nextState.params;
+    this.props.store.dispatch(joinGame({ gameId: id }));
+
+    this.redirectToLobby(replace, id);
   }
 
   render() {
@@ -44,10 +69,13 @@ export default class Root extends Component {
               <Route path="/" component={App}>
                 <IndexRoute component={StartScreen} />
                 <Route path="game" onEnter={this.requireName}>
-                  <Route path="new" component={withSocket(GameNewScreen)} />
+                  <Route path="new" onEnter={this.createGameAndRedirect} />
                   <Route path=":id">
-                    <IndexRoute component={GameScreen} />
-                    <Route path="lobby" component={GameLobbyScreen} />
+                    <Route onEnter={this.redirectIfNoGameId}>
+                      <IndexRoute component={GameScreen} />
+                      <Route path="lobby" component={GameLobbyScreen} />
+                    </Route>
+                    <Route path="join" onEnter={this.joinGameAndRedirect} />
                   </Route>
                 </Route>
               </Route>
