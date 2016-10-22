@@ -1,16 +1,43 @@
 import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { withRouter, Link } from 'react-router';
 
 import { NewPlayerForm } from 'containers';
 import { setPlayerName } from 'redux/modules/name';
 
 export class StartScreen extends Component {
   static propTypes = {
+    router: PropTypes.shape({
+      replace: PropTypes.func.isRequired,
+    }).isRequired,
+    location: PropTypes.shape({
+      query: PropTypes.shape({
+        ref: PropTypes.string,
+      }).isRequired,
+    }).isRequired,
     playerName: PropTypes.string.isRequired,
     setPlayerName: PropTypes.func.isRequired,
-  };
+  }
+
+  componentDidMount = () => {
+    this.goToRef(this.props);
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    this.goToRef(nextProps);
+  }
+
+  goToRef = (props) => {
+    const { router, location, playerName } = props;
+    const { ref } = location.query;
+
+    console.log('ref', ref);
+
+    if (playerName && ref) {
+      router.replace(ref);
+    }
+  }
 
   render() {
     const { playerName } = this.props;
@@ -20,8 +47,8 @@ export class StartScreen extends Component {
         <h1>Welcome to HearthStone{ playerName ? `, ${playerName}` : '' }</h1>
         { playerName ? (
           <div>
-            <div><button><Link to="/game/asdfasdfasf/lobby">Start new game</Link></button></div>
-            <div><button><Link to="/game/new">Join existing game</Link></button></div>
+            <div><button><Link to="/game/new">Start new game</Link></button></div>
+            <div><button><Link to="/game/join">Join existing game</Link></button></div>
           </div>
         ) : (
           <NewPlayerForm playerName={playerName} onSubmit={this.props.setPlayerName} />
@@ -34,5 +61,8 @@ export class StartScreen extends Component {
 const mapStateToProps = state => ({ playerName: state.player.name });
 const mapDispatchToProps = dispatch => (bindActionCreators({ setPlayerName }, dispatch));
 
-export default connect(mapStateToProps, mapDispatchToProps)(StartScreen);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(StartScreen);
 
