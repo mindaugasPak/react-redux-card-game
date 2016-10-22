@@ -19,7 +19,6 @@ export default class Root extends Component {
 
   constructor(props) {
     super(props);
-    this.withSocket = this.withSocket.bind(this);
     this.requireName = this.requireName.bind(this);
   }
 
@@ -29,10 +28,6 @@ export default class Root extends Component {
     if (!name) {
       replace('/');
     }
-  }
-
-  withSocket(component) {
-    return props => React.createElement(component, { socket: this.props.socket, ...props });
   }
 
   render() {
