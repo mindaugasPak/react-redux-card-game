@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import { withSocket } from 'hoc';
 import { GameLobby } from 'components';
@@ -21,6 +22,9 @@ export class GameLobbyScreen extends Component {
       toggleReady: PropTypes.func.isRequired,
       updateHasOpponent: PropTypes.func.isRequired,
     }),
+    router: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
     socket: PropTypes.shape({
       emit: PropTypes.func.isRequired,
       on: PropTypes.func.isRequired,
@@ -46,13 +50,13 @@ export class GameLobbyScreen extends Component {
     props.socket.on('playerJoined', ({ playerCount }) => {
       if (playerCount === 2) {
         props.actions.updateHasOpponent(true);
+        this.goInGame(props);
       }
     });
   }
 
   joinGame = (props) => {
     const { socket, gameId } = props;
-    console.log('gameId', gameId);
 
     socket.emit('gameJoin', { gameId });
   }
@@ -63,7 +67,13 @@ export class GameLobbyScreen extends Component {
     socket.emit('gameLeave', { gameId });
   }
 
-  toggleReadyForPlayer = () => this.props.actions.toggleReady({ target: 'PLAYER' });
+  goInGame = (props) => {
+    const { router, gameId } = props;
+
+    router.push(`/game/${gameId}`);
+  }
+
+  toggleReadyForPlayer = () => this.props.actions.toggleReady({ target: 'PLAYER' })
 
   render() {
     return <GameLobby {...this.props} toggleReady={this.toggleReadyForPlayer} />;
@@ -82,5 +92,6 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   withSocket,
+  withRouter,
   connect(mapStateToProps, mapDispatchToProps)
 )(GameLobbyScreen);
