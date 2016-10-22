@@ -53,7 +53,8 @@ export default class Root extends Component {
 
   joinGameAndRedirect = (nextState, replace) => {
     const { id } = nextState.params;
-    this.props.store.dispatch(joinGame({ gameId: id }));
+
+    this.props.store.dispatch(joinGame(id));
 
     this.redirectToLobby(replace, id);
   }
