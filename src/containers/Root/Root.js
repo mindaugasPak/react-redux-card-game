@@ -19,6 +19,15 @@ export default class Root extends Component {
   constructor(props) {
     super(props);
     this.withSocket = this.withSocket.bind(this);
+    this.requireName = this.requireName.bind(this);
+  }
+
+  requireName(nextState, replace) {
+    const { name } = this.props.store.getState().player;
+
+    if (!name) {
+      replace('/');
+    }
   }
 
   withSocket(component) {
@@ -34,7 +43,7 @@ export default class Root extends Component {
           <Router history={hashHistory}>
             <Route path="/" component={App}>
               <IndexRoute component={StartScreen} />
-              <Route path="game">
+              <Route path="game" onEnter={this.requireName}>
                 <Route path="new" component={this.withSocket(GameNewScreen)} />
                 <Route path=":id">
                   <IndexRoute component={GameScreen} />
