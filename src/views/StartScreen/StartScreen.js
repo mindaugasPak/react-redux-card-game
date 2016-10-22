@@ -32,8 +32,6 @@ export class StartScreen extends Component {
     const { router, location, playerName } = props;
     const { ref } = location.query;
 
-    console.log('ref', ref);
-
     if (playerName && ref) {
       router.replace(ref);
     }
