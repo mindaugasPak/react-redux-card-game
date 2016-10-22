@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
-import { App, DevTools } from 'containers';
+import { App, DevTools, SocketProvider } from 'containers';
+import { withSocket } from 'hoc';
 import { GameLobbyScreen, GameNewScreen, GameScreen, StartScreen } from 'views';
 import sharedStyles from 'components/shared/styles.scss';
 
@@ -35,23 +36,25 @@ export default class Root extends Component {
   }
 
   render() {
-    const { store } = this.props;
+    const { store, socket } = this.props;
 
     return (
       <div className={sharedStyles.fullSize}>
         <Provider store={store}>
-          <Router history={hashHistory}>
-            <Route path="/" component={App}>
-              <IndexRoute component={StartScreen} />
-              <Route path="game" onEnter={this.requireName}>
-                <Route path="new" component={this.withSocket(GameNewScreen)} />
-                <Route path=":id">
-                  <IndexRoute component={GameScreen} />
-                  <Route path="lobby" component={GameLobbyScreen} />
+          <SocketProvider socket={socket}>
+            <Router history={hashHistory}>
+              <Route path="/" component={App}>
+                <IndexRoute component={StartScreen} />
+                <Route path="game" onEnter={this.requireName}>
+                  <Route path="new" component={withSocket(GameNewScreen)} />
+                  <Route path=":id">
+                    <IndexRoute component={GameScreen} />
+                    <Route path="lobby" component={GameLobbyScreen} />
+                  </Route>
                 </Route>
               </Route>
-            </Route>
-          </Router>
+            </Router>
+          </SocketProvider>
         </Provider>
         <DevTools store={store} />
       </div>
