@@ -26,7 +26,10 @@ export default class Root extends Component {
     const { name } = this.props.store.getState().player;
 
     if (!name) {
-      replace('/');
+      replace({
+        pathname: '/',
+        query: { ref: nextState.location.pathname },
+      });
     }
   }
 
