@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 
+import { PlayerCard } from 'components';
 import styles from './GameLobby.scss';
 
 const WaitingForOpponent = ({ gameId }) => (
@@ -18,18 +19,10 @@ const GameLobby = ({ player, opponent, gameId, hasOpponent, toggleReady }) => (
   <div className={styles.Lobby}>
     <div style={{ width: '100%' }}>
       <section className={styles.LobbyVersus}>
-        <figure className={styles.LobbyPlayer}>
-          <div className={styles.LobbyAvatar} />
-          <figcaption className={styles.LobbyPlayerName}>{ player.name || 'Unnamed' }</figcaption>
-          <div className={styles.LobbyPlayerReady}>{ player.ready ? 'Ready' : 'Not ready' }</div>
-        </figure>
+        <PlayerCard playerName={player.name} ready={player.ready} />
         <div className={styles.LobbyVersusText}>VS</div>
         { hasOpponent ? (
-          <figure className={styles.LobbyPlayer}>
-            <div className={styles.LobbyAvatar} />
-            <figcaption className={styles.LobbyPlayerName}>{ opponent.name }</figcaption>
-            <div className={styles.LobbyPlayerReady}>{ opponent.ready }</div>
-          </figure>
+          <PlayerCard playerName={opponent.name} ready={opponent.ready} />
         ) : (
           <WaitingForOpponent gameId={gameId} />
         ) }
