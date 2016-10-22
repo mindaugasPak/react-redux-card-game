@@ -25,7 +25,43 @@ export class GameLobbyScreen extends Component {
       emit: PropTypes.func.isRequired,
       on: PropTypes.func.isRequired,
     }).isRequired,
-  };
+  }
+
+  componentDidMount = () => {
+    this.joinGame(this.props);
+    this.notifyOnPlayerJoined(this.props);
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.gameId !== this.props.gameId) {
+      this.joinGame(nextProps);
+    }
+  }
+
+  componentWillUnmount = () => {
+    this.leaveGame(this.props);
+  }
+
+  notifyOnPlayerJoined = (props) => {
+    props.socket.on('playerJoined', ({ playerCount }) => {
+      if (playerCount === 2) {
+        props.actions.updateHasOpponent(true);
+      }
+    });
+  }
+
+  joinGame = (props) => {
+    const { socket, gameId } = props;
+    console.log('gameId', gameId);
+
+    socket.emit('gameJoin', { gameId });
+  }
+
+  leaveGame = (props) => {
+    const { socket, gameId } = props;
+
+    socket.emit('gameLeave', { gameId });
+  }
 
   toggleReadyForPlayer = () => this.props.actions.toggleReady({ target: 'PLAYER' });
 
