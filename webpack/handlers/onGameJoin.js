@@ -1,11 +1,12 @@
 const {
+  colors,
   createLogger,
   newGame,
   lengthOfRoom,
   clientsForRoom,
 } = require('./../utils');
 
-const logGameJoin = createLogger('GAMEJOIN', 'cyan');
+const logGameJoin = createLogger('GAMEJOIN', colors.onGameJoin);
 
 function onGameJoin({ gameId }) {
   const getPlayerCount = () => lengthOfRoom(this.io, gameId);

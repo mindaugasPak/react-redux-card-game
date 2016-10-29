@@ -1,5 +1,11 @@
 const chalk = require('chalk'); // eslint-disable-line import/no-extraneous-dependencies
 
+exports.colors = {
+  onAction: 'green',
+  onGameJoin: 'cyan',
+  onGameStart: 'magenta',
+};
+
 exports.createLogger = function createLogger(prefix, color) {
   return console.log.bind(console, `[${chalk[color](prefix)}]`);
 };
