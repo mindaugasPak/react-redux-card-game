@@ -3,8 +3,11 @@ import ReactDOM from 'react-dom';
 import socketClient from 'socket.io-client';
 
 import configureStore from 'redux/configureStore';
-import dispatchServerActions from 'redux/utils/dispatchServerActions';
-import dispatchNewGameAction from 'redux/utils/dispatchNewGameAction';
+import {
+  dispatchNewGameAction,
+  dispatchServerActions,
+  getInitialState,
+} from 'redux/utils';
 
 import { Root } from './containers';
 import './styles/app.scss';
