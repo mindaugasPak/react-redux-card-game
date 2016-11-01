@@ -4,7 +4,7 @@ const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'cheap-source-map',
   port: 3000,
   context: path.resolve(__dirname, '..'),
   entry: [
