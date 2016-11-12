@@ -19,11 +19,11 @@ function onGameStart({ gameId }) {
     const playerOneStarts = Math.random() >= 0.5;
     const [playerOne, playerTwo] = clientsForRoom(this.io, gameId);
 
-    const playerOneNewGame = newGame(gameId, 'GuardianBanana', playerOneStarts);
+    const playerOneNewGame = newGame(gameId, playerOneStarts);
     this.io.to(playerOne).emit('newGame', playerOneNewGame);
     log('[ACTION] Sent action to playerOne', playerOneNewGame);
 
-    const playerTwoNewGame = newGame(gameId, 'Boyd', !playerOneStarts);
+    const playerTwoNewGame = newGame(gameId, !playerOneStarts);
     this.io.to(playerTwo).emit('newGame', playerTwoNewGame);
     log('[ACTION] Sent action to playerTwo', playerTwoNewGame);
   }
