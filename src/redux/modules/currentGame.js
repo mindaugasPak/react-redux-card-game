@@ -99,9 +99,7 @@ export default function currentGameReducer(state = initialState(), action) {
     case START_GAME:
       return state.set('started', true);
     case UPDATE_HAS_OPPONENT:
-      return state.merge({
-        hasOpponent: action.hasOpponent,
-      });
+      return state.set('hasOpponent', action.hasOpponent);
     case RESET_CURRENT_GAME:
       return initialState;
     default:
