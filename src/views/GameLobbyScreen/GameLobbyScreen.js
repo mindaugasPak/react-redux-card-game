@@ -5,22 +5,30 @@ import { withRouter } from 'react-router';
 
 import { withSocket } from 'hoc';
 import { GameLobby } from 'components';
-import { toggleReady } from 'redux/modules/ready';
-import { updateHasOpponent } from 'redux/modules/currentGame';
+import { setReady, toggleReady } from 'redux/modules/ready';
+import { startGame, updateHasOpponent, resetCurrentGame } from 'redux/modules/currentGame';
+import { setOpponentName } from 'redux/modules/name';
 
 export class GameLobbyScreen extends Component {
   static propTypes = {
     player: PropTypes.shape({
       name: PropTypes.string.isRequired,
+      ready: PropTypes.bool.isRequired,
     }).isRequired,
     opponent: PropTypes.shape({
       name: PropTypes.string.isRequired,
+      ready: PropTypes.bool.isRequired,
     }).isRequired,
     gameId: PropTypes.string.isRequired,
     hasOpponent: PropTypes.bool.isRequired,
+    started: PropTypes.bool.isRequired,
     actions: PropTypes.shape({
+      setReady: PropTypes.func.isRequired,
       toggleReady: PropTypes.func.isRequired,
+      startGame: PropTypes.func.isRequired,
       updateHasOpponent: PropTypes.func.isRequired,
+      setOpponentName: PropTypes.func.isRequired,
+      resetCurrentGame: PropTypes.func.isRequired,
     }),
     router: PropTypes.shape({
       push: PropTypes.func.isRequired,
@@ -40,31 +48,61 @@ export class GameLobbyScreen extends Component {
     if (nextProps.gameId !== this.props.gameId) {
       this.joinGame(nextProps);
     }
+
+    if (nextProps.player.ready && nextProps.opponent.ready) {
+      this.startGame(nextProps);
+      // this.goInGame(nextProps);
+    }
   }
 
   componentWillUnmount = () => {
-    this.leaveGame(this.props);
+    if (!this.props.started) {
+      this.leaveGame(this.props);
+    }
+
+    this.removeOnPlayerJoinedListener(this.props);
   }
 
   notifyOnPlayerJoined = (props) => {
-    props.socket.on('playerJoined', ({ playerCount }) => {
+    props.socket.on('playerJoined', ({ name, playerCount }) => {
+      if (props.player.name !== name) {
+        props.actions.setOpponentName(name);
+      }
+
       if (playerCount === 2) {
         props.actions.updateHasOpponent(true);
-        this.goInGame(props);
       }
     });
   }
 
-  joinGame = (props) => {
+  removeOnPlayerJoinedListener = (props) => {
+    props.socket.removeAllListeners('playerJoined');
+  }
+
+  emitReadyChange = (props, readyState) => {
     const { socket, gameId } = props;
 
-    socket.emit('gameJoin', { gameId });
+    socket.emit('readyChange', { gameId, readyState });
+  }
+
+  startGame = (props) => {
+    const { socket, gameId, actions } = props;
+
+    socket.emit('gameStart', { gameId });
+    actions.startGame();
+  }
+
+  joinGame = (props) => {
+    const { socket, gameId, player: { name } } = props;
+
+    socket.emit('gameJoin', { gameId, name });
   }
 
   leaveGame = (props) => {
-    const { socket, gameId } = props;
+    const { socket, gameId, actions } = props;
 
     socket.emit('gameLeave', { gameId });
+    actions.resetCurrentGame();
   }
 
   goInGame = (props) => {
@@ -73,21 +111,32 @@ export class GameLobbyScreen extends Component {
     router.push(`/game/${gameId}`);
   }
 
-  toggleReadyForPlayer = () => this.props.actions.toggleReady({ target: 'PLAYER' })
+  toggleReadyForPlayer = () => {
+    this.props.actions.toggleReady({ target: 'PLAYER' });
+    this.emitReadyChange(this.props, !this.props.player.ready);
+  }
 
   render() {
     return <GameLobby {...this.props} toggleReady={this.toggleReadyForPlayer} />;
   }
 }
 
-const mapStateToProps = ({ player, opponent, currentGame: { gameId, hasOpponent } }) => ({
+const mapStateToProps = ({ player, opponent, currentGame: { gameId, started, hasOpponent } }) => ({
   player,
   opponent,
   gameId,
+  started,
   hasOpponent,
 });
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ toggleReady, updateHasOpponent }, dispatch),
+  actions: bindActionCreators({
+    setReady,
+    toggleReady,
+    startGame,
+    updateHasOpponent,
+    setOpponentName,
+    resetCurrentGame,
+  }, dispatch),
 });
 
 export default compose(
