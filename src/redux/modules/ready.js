@@ -13,6 +13,7 @@ export function setReady({ readyState, target }) {
 export function toggleReady({ target }) {
   return {
     target,
+    source: target,
     type: TOGGLE_PLAYER_READY,
   };
 }
