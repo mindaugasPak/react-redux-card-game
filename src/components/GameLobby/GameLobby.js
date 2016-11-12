@@ -3,9 +3,10 @@ import React, { PropTypes } from 'react';
 import { PlayerCard } from 'components';
 import styles from './GameLobby.scss';
 
-const GameLobby = ({ player, opponent, gameId, hasOpponent, toggleReady }) => (
+const GameLobby = ({ player, opponent, gameId, hasOpponent, countdown, toggleReady }) => (
   <div className={styles.Lobby}>
     <div style={{ width: '100%' }}>
+      { countdown.countdownStarted ? <h1>{ countdown.countdownTime }</h1> : null }
       <section className={styles.LobbyVersus}>
         <PlayerCard playerName={player.name} ready={player.ready} gameId={gameId} />
         <div className={styles.LobbyVersusText}>VS</div>
@@ -34,6 +35,10 @@ GameLobby.propTypes = {
     ready: PropTypes.bool.isRequired,
   }).isRequired,
   gameId: PropTypes.string.isRequired,
+  countdown: PropTypes.shape({
+    countdownStarted: PropTypes.bool.isRequired,
+    countdownTime: PropTypes.number.isRequired,
+  }).isRequired,
   hasOpponent: PropTypes.bool.isRequired,
   toggleReady: PropTypes.func.isRequired,
 };

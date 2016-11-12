@@ -39,6 +39,11 @@ export class GameLobbyScreen extends Component {
     }).isRequired,
   }
 
+  state = {
+    countdownStarted: false,
+    countdownTime: 5,
+  };
+
   componentDidMount = () => {
     this.joinGame(this.props);
     this.notifyOnPlayerJoined(this.props);
@@ -50,8 +55,9 @@ export class GameLobbyScreen extends Component {
     }
 
     if (nextProps.player.ready && nextProps.opponent.ready) {
-      this.startGame(nextProps);
-      // this.goInGame(nextProps);
+      if (!this.state.countdownStarted) {
+        this.startCountdown();
+      }
     }
   }
 
@@ -61,6 +67,22 @@ export class GameLobbyScreen extends Component {
     }
 
     this.removeOnPlayerJoinedListener(this.props);
+    clearInterval(this.countdownInterval);
+  }
+
+  startCountdown = () => {
+    this.setState({ countdownStarted: true });
+    this.countdownInterval = setInterval(this.countDown, 1000);
+  }
+
+  countDown = () => {
+    this.setState({ countdownTime: this.state.countdownTime - 1 });
+
+    if (this.state.countdownTime <= 0) {
+      this.startGame(this.props);
+      this.goInGame(this.props);
+      clearInterval(this.countdownInterval);
+    }
   }
 
   notifyOnPlayerJoined = (props) => {
@@ -117,7 +139,13 @@ export class GameLobbyScreen extends Component {
   }
 
   render() {
-    return <GameLobby {...this.props} toggleReady={this.toggleReadyForPlayer} />;
+    return (
+      <GameLobby
+        {...this.props}
+        countdown={this.state}
+        toggleReady={this.toggleReadyForPlayer}
+      />
+    );
   }
 }
 
