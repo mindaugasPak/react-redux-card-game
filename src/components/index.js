@@ -4,6 +4,7 @@ export CardBack from './CardBack/CardBack';
 export GameLobby from './GameLobby/GameLobby';
 export Hand from './Hand/Hand';
 export Hero from './Hero/Hero';
+export InvitePlayerModal from './InvitePlayerModal/InvitePlayerModal';
 export Minion from './Minion/Minion';
 export MinionsOnBoard from './MinionsOnBoard/MinionsOnBoard';
 export Opponent from './Opponent/Opponent';
