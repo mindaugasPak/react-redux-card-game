@@ -4,6 +4,7 @@ exports.colors = {
   onAction: 'green',
   onGameJoin: 'cyan',
   onGameStart: 'magenta',
+  onGameLeave: 'red',
 };
 
 exports.createLogger = function createLogger(prefix, color) {
