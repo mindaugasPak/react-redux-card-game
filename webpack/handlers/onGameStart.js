@@ -19,6 +19,10 @@ function onGameStart({ gameId }) {
     const playerOneStarts = Math.random() >= 0.5;
     const [playerOne, playerTwo] = clientsForRoom(this.io, gameId);
 
+    // If player one did not fire off this event, don't do anything,
+    // because player one already started.
+    if (this.socket.id !== playerOne) return;
+
     const playerOneNewGame = newGame(gameId, playerOneStarts);
     this.io.to(playerOne).emit('newGame', playerOneNewGame);
     log('[ACTION] Sent action to playerOne', playerOneNewGame);
