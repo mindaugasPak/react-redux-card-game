@@ -1,10 +1,11 @@
 const SET_PLAYER_READY = 'SET_PLAYER_READY';
 const TOGGLE_PLAYER_READY = 'TOGGLE_PLAYER_READY';
 
-export function setReady({ to, target }) {
+export function setReady({ readyState, target }) {
   return {
-    to,
+    readyState,
     target,
+    source: target,
     type: SET_PLAYER_READY,
   };
 }
