@@ -40,6 +40,7 @@ export class GameLobbyScreen extends Component {
     }),
     router: PropTypes.shape({
       push: PropTypes.func.isRequired,
+      createHref: PropTypes.func.isRequired,
     }).isRequired,
     socket: PropTypes.shape({
       emit: PropTypes.func.isRequired,
@@ -147,9 +148,15 @@ export class GameLobbyScreen extends Component {
   }
 
   render() {
+    const { gameId } = this.props;
+    const { createHref } = this.props.router;
+    const { protocol, host } = window.location;
+    const inviteLink = `${protocol}//${host}/${createHref(`/game/${gameId}/join`)}`;
+
     return (
       <GameLobby
         {...this.props}
+        inviteLink={inviteLink}
         countdown={this.state}
         toggleReady={this.toggleReadyForPlayer}
       />

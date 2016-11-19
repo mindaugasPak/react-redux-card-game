@@ -6,7 +6,7 @@ import styles from './GameLobby.scss';
 const GameLobby = ({
   player,
   opponent,
-  gameId,
+  inviteLink,
   hasOpponent,
   countdown,
   toggleReady,
@@ -20,7 +20,6 @@ const GameLobby = ({
         <PlayerCard
           playerName={player.name}
           ready={player.ready}
-          gameId={gameId}
           friendInviteModal={friendInviteModal}
           playerCardActions={playerCardActions}
         />
@@ -31,13 +30,12 @@ const GameLobby = ({
           <PlayerCard
             playerName={opponent.name}
             ready={opponent.ready}
-            gameId={gameId}
             friendInviteModal={friendInviteModal}
             playerCardActions={playerCardActions}
           />
         ) : (
           <PlayerCard
-            gameId={gameId}
+            inviteLink={inviteLink}
             friendInviteModal={friendInviteModal}
             playerCardActions={playerCardActions}
           />
@@ -61,7 +59,7 @@ GameLobby.propTypes = {
     name: PropTypes.string.isRequired,
     ready: PropTypes.bool.isRequired,
   }).isRequired,
-  gameId: PropTypes.string.isRequired,
+  inviteLink: PropTypes.string.isRequired,
   countdown: PropTypes.shape({
     countdownStarted: PropTypes.bool.isRequired,
     countdownTime: PropTypes.number.isRequired,
