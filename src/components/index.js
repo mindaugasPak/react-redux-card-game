@@ -15,3 +15,4 @@ export PlayerSide from './PlayerSide/PlayerSide';
 
 // Forms
 export FormInput from './FormInput/FormInput';
+export FormInputGroup from './FormInputGroup/FormInputGroup';
