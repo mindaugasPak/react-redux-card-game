@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import Modal from 'react-modal';
 
+import { FormInputGroup, FormInput } from 'components';
+
 class InvitePlayerModal extends Component {
   select = () => {
     const inviteLinkInput = this.inviteLinkInput;
@@ -25,13 +27,19 @@ class InvitePlayerModal extends Component {
       <Modal isOpen={isOpen} onAfterOpen={this.select} onRequestClose={onClose}>
         <button onClick={onClose}>close modal</button>
         <h1>Invite a player</h1>
-        <input
-          type="text"
-          ref={(input) => { this.inviteLinkInput = input; }}
-          value={inviteLink}
-          readOnly
-        />
-        <button onClick={this.selectAndCopy}>Copy</button>
+
+        <FormInputGroup>
+          <FormInput
+            type="text"
+            inputRef={(input) => { this.inviteLinkInput = input; }}
+            value={inviteLink}
+            onClick={this.select}
+            full isGrouped readOnly
+          />
+          <button onClick={this.selectAndCopy}>
+            Copy
+          </button>
+        </FormInputGroup>
       </Modal>
     );
   }
