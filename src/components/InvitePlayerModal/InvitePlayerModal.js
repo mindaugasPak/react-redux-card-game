@@ -1,14 +1,41 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Modal from 'react-modal';
 
-const InvitePlayerModal = ({ inviteLink, isOpen, onClose }) => (
-  <Modal isOpen={isOpen} onRequestClose={onClose}>
-    <button onClick={onClose}>close modal</button>
-    <h1>Invite a player</h1>
-    <input type="text" value={inviteLink} readOnly />
-    <button>Copy</button>
-  </Modal>
-);
+class InvitePlayerModal extends Component {
+  select = () => {
+    const inviteLinkInput = this.inviteLinkInput;
+
+    inviteLinkInput.focus();
+    inviteLinkInput.setSelectionRange(0, inviteLinkInput.value.length);
+  }
+
+  copy = () => {
+    document.execCommand('copy');
+  }
+
+  selectAndCopy = () => {
+    this.select();
+    this.copy();
+  }
+
+  render() {
+    const { inviteLink, isOpen, onClose } = this.props;
+
+    return (
+      <Modal isOpen={isOpen} onAfterOpen={this.select} onRequestClose={onClose}>
+        <button onClick={onClose}>close modal</button>
+        <h1>Invite a player</h1>
+        <input
+          type="text"
+          ref={(input) => { this.inviteLinkInput = input; }}
+          value={inviteLink}
+          readOnly
+        />
+        <button onClick={this.selectAndCopy}>Copy</button>
+      </Modal>
+    );
+  }
+}
 
 InvitePlayerModal.propTypes = {
   inviteLink: PropTypes.string.isRequired,
