@@ -12,3 +12,6 @@ export OpponentHand from './OpponentHand/OpponentHand';
 export Player from './Player/Player';
 export PlayerCard from './PlayerCard/PlayerCard';
 export PlayerSide from './PlayerSide/PlayerSide';
+
+// Forms
+export FormInput from './FormInput/FormInput';
