@@ -38,6 +38,10 @@ exports.clientIdsForRoom = function clientIdsForRoom(io, roomName) {
   return [];
 };
 
+exports.findClient = function findClient(io, socketId) {
+  return io.sockets.connected[socketId];
+};
+
 exports.isClientInRoom = function isClientInRoom(io, roomName, clientId) {
   const clients = exports.clientIdsForRoom(io, roomName);
 
