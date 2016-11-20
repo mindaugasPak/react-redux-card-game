@@ -1,16 +1,16 @@
 const {
   colors,
   createLogger,
-  clientsForRoom,
+  clientIdsForRoom,
   isClientInRoom,
 } = require('./../utils');
 
 const logAction = createLogger('ACTION', colors.onAction);
 
 function onAction({ gameId, opponentHandCount, action }) {
-  logAction('current clients:', clientsForRoom(this.io, gameId));
+  logAction('current clients:', clientIdsForRoom(this.io, gameId));
   logAction('Current action from:',
-            `Player${clientsForRoom(this.io, gameId).indexOf(this.socket.id) + 1}`);
+            `Player${clientIdsForRoom(this.io, gameId).indexOf(this.socket.id) + 1}`);
 
   // Validate if player is actually part of this game.
   if (!isClientInRoom(this.io, gameId, this.socket.id)) return;

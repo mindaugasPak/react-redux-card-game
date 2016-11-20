@@ -28,7 +28,7 @@ exports.lengthOfRoom = function lengthOfRoom(io, roomName) {
   return 0;
 };
 
-exports.clientsForRoom = function clientsForRoom(io, roomName) {
+exports.clientIdsForRoom = function clientIdsForRoom(io, roomName) {
   const room = io.sockets.adapter.rooms[roomName];
 
   if (room) {
@@ -39,7 +39,7 @@ exports.clientsForRoom = function clientsForRoom(io, roomName) {
 };
 
 exports.isClientInRoom = function isClientInRoom(io, roomName, clientId) {
-  const clients = exports.clientsForRoom(io, roomName);
+  const clients = exports.clientIdsForRoom(io, roomName);
 
   return clients.indexOf(clientId) !== -1;
 };

@@ -2,7 +2,8 @@ const {
   colors,
   createLogger,
   lengthOfRoom,
-  clientsForRoom,
+  clientIdsForRoom,
+  findClient,
 } = require('./../utils');
 
 const logGameJoin = createLogger('GAMEJOIN', colors.onGameJoin);
@@ -17,8 +18,8 @@ function onGameJoin({ gameId, name }) {
   this.io.to(gameId).emit('playerJoined', { gameId, name, playerCount: getPlayerCount() });
 
   if (getPlayerCount() === 2) {
-    const enemySocketId = clientsForRoom(this.io, gameId).find(id => id !== this.socket.id);
-    const enemyPlayerName = this.io.sockets.connected[enemySocketId].username;
+    const enemySocketId = clientIdsForRoom(this.io, gameId).find(id => id !== this.socket.id);
+    const enemyPlayerName = findClient(this.io, enemySocketId).username;
 
     this.io.to(this.socket.id).emit('playerJoined', { gameId, name: enemyPlayerName, playerCount: getPlayerCount() });
   }

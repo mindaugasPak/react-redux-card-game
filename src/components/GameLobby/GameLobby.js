@@ -22,6 +22,7 @@ const GameLobby = ({
           ready={player.ready}
           friendInviteModal={friendInviteModal}
           playerCardActions={playerCardActions}
+          canLeave
         />
 
         <div className={styles.LobbyVersusText}>VS</div>

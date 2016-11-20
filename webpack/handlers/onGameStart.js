@@ -2,7 +2,7 @@ const {
   colors,
   createLogger,
   lengthOfRoom,
-  clientsForRoom,
+  clientIdsForRoom,
   newGame,
 } = require('./../utils');
 
@@ -17,7 +17,7 @@ function onGameStart({ gameId }) {
   if (getPlayerCount() === 2) {
     log('[START] Time to start the game', gameId);
     const playerOneStarts = Math.random() >= 0.5;
-    const [playerOne, playerTwo] = clientsForRoom(this.io, gameId);
+    const [playerOne, playerTwo] = clientIdsForRoom(this.io, gameId);
 
     // If player one did not fire off this event, don't do anything,
     // because player one already started.
