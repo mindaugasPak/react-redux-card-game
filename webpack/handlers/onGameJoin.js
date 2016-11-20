@@ -6,7 +6,7 @@ const {
   findClient,
 } = require('./../utils');
 
-const logGameJoin = createLogger('GAMEJOIN', colors.onGameJoin);
+const log = createLogger('GAMEJOIN', colors.onGameJoin);
 
 function onGameJoin({ gameId, name }) {
   const getPlayerCount = () => lengthOfRoom(this.io, gameId);
@@ -23,8 +23,8 @@ function onGameJoin({ gameId, name }) {
 
     this.io.to(this.socket.id).emit('playerJoined', { gameId, name: enemyPlayerName, playerCount: getPlayerCount() });
   }
-
-  logGameJoin('Current players:', clientsForRoom(this.io, gameId));
+  log(`${name} has joined the room: ${gameId}`);
+  log('Current players:', clientIdsForRoom(this.io, gameId).map(id => findClient(this.io, id).username).join(', '));
 }
 
 module.exports = onGameJoin;
