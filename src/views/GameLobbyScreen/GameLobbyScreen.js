@@ -8,6 +8,7 @@ import { GameLobby } from 'components';
 import { setReady, toggleReady } from 'redux/modules/ready';
 import { startGame, updateHasOpponent, resetCurrentGame } from 'redux/modules/currentGame';
 import { setOpponentName } from 'redux/modules/name';
+import { openFriendInviteModal, closeFriendInviteModal } from 'redux/modules/friendInviteModal';
 
 export class GameLobbyScreen extends Component {
   static propTypes = {
@@ -22,6 +23,9 @@ export class GameLobbyScreen extends Component {
     gameId: PropTypes.string.isRequired,
     hasOpponent: PropTypes.bool.isRequired,
     started: PropTypes.bool.isRequired,
+    friendInviteModal: PropTypes.shape({
+      isOpen: PropTypes.bool.isRequired,
+    }).isRequired,
     actions: PropTypes.shape({
       setReady: PropTypes.func.isRequired,
       toggleReady: PropTypes.func.isRequired,
@@ -30,10 +34,16 @@ export class GameLobbyScreen extends Component {
       setOpponentName: PropTypes.func.isRequired,
       resetCurrentGame: PropTypes.func.isRequired,
     }),
+    playerCardActions: PropTypes.shape({
+      openFriendInviteModal: PropTypes.func.isRequired,
+      closeFriendInviteModal: PropTypes.func.isRequired,
+    }),
     router: PropTypes.shape({
       push: PropTypes.func.isRequired,
+      createHref: PropTypes.func.isRequired,
     }).isRequired,
     socket: PropTypes.shape({
+      id: PropTypes.string.isRequired,
       emit: PropTypes.func.isRequired,
       on: PropTypes.func.isRequired,
     }).isRequired,
@@ -86,8 +96,8 @@ export class GameLobbyScreen extends Component {
   }
 
   notifyOnPlayerJoined = (props) => {
-    props.socket.on('playerJoined', ({ name, playerCount }) => {
-      if (props.player.name !== name) {
+    props.socket.on('playerJoined', ({ socketId, name, playerCount }) => {
+      if (this.props.socket.id !== socketId) {
         props.actions.setOpponentName(name);
       }
 
@@ -139,9 +149,15 @@ export class GameLobbyScreen extends Component {
   }
 
   render() {
+    const { gameId } = this.props;
+    const { createHref } = this.props.router;
+    const { protocol, host } = window.location;
+    const inviteLink = `${protocol}//${host}/${createHref(`/game/${gameId}/join`)}`;
+
     return (
       <GameLobby
         {...this.props}
+        inviteLink={inviteLink}
         countdown={this.state}
         toggleReady={this.toggleReadyForPlayer}
       />
@@ -149,13 +165,19 @@ export class GameLobbyScreen extends Component {
   }
 }
 
-const mapStateToProps = ({ player, opponent, currentGame: { gameId, started, hasOpponent } }) => ({
-  player,
-  opponent,
-  gameId,
-  started,
-  hasOpponent,
-});
+const mapStateToProps = ({ player, opponent, currentGame, lobby }) => {
+  const { gameId, started, hasOpponent } = currentGame;
+  const { friendInviteModal } = lobby;
+
+  return {
+    player,
+    opponent,
+    gameId,
+    started,
+    hasOpponent,
+    friendInviteModal,
+  };
+};
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     setReady,
@@ -164,6 +186,10 @@ const mapDispatchToProps = dispatch => ({
     updateHasOpponent,
     setOpponentName,
     resetCurrentGame,
+  }, dispatch),
+  playerCardActions: bindActionCreators({
+    openFriendInviteModal,
+    closeFriendInviteModal,
   }, dispatch),
 });
 

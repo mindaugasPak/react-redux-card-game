@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import { FormInput } from 'components';
+
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -29,10 +31,12 @@ export default class NewPlayerForm extends Component {
   render() {
     return (
       <form onSubmit={this.onSubmitHandler}>
-        <input
+        <FormInput
           type="text"
           onChange={this.onChangeHandler}
           value={this.state.nameInput}
+          placeholder="Your username here"
+          base
         />
         <input type="submit" value="Save" />
       </form>
