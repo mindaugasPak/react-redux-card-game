@@ -43,6 +43,7 @@ export class GameLobbyScreen extends Component {
       createHref: PropTypes.func.isRequired,
     }).isRequired,
     socket: PropTypes.shape({
+      id: PropTypes.string.isRequired,
       emit: PropTypes.func.isRequired,
       on: PropTypes.func.isRequired,
     }).isRequired,
@@ -95,8 +96,8 @@ export class GameLobbyScreen extends Component {
   }
 
   notifyOnPlayerJoined = (props) => {
-    props.socket.on('playerJoined', ({ name, playerCount }) => {
-      if (props.player.name !== name) {
+    props.socket.on('playerJoined', ({ socketId, name, playerCount }) => {
+      if (this.props.socket.id !== socketId) {
         props.actions.setOpponentName(name);
       }
 
