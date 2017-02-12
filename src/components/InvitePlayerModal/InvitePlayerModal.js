@@ -24,7 +24,12 @@ class InvitePlayerModal extends Component {
     const { inviteLink, isOpen, onClose } = this.props;
 
     return (
-      <Modal isOpen={isOpen} onAfterOpen={this.select} onRequestClose={onClose}>
+      <Modal
+        isOpen={isOpen}
+        onAfterOpen={this.select}
+        onRequestClose={onClose}
+        contentLabel="Invite a player"
+      >
         <button onClick={onClose}>close modal</button>
         <h1>Invite a player</h1>
 
