@@ -7,6 +7,7 @@ export Hero from './Hero/Hero';
 export InvitePlayerModal from './InvitePlayerModal/InvitePlayerModal';
 export Minion from './Minion/Minion';
 export MinionsOnBoard from './MinionsOnBoard/MinionsOnBoard';
+export Modal from './Modal/Modal';
 export Opponent from './Opponent/Opponent';
 export OpponentHand from './OpponentHand/OpponentHand';
 export Player from './Player/Player';
