@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import Modal from 'react-modal';
 
-import { FormInputGroup, FormInput } from 'components';
+import { Modal, FormInputGroup, FormInput } from 'components';
 
 class InvitePlayerModal extends Component {
   select = () => {
