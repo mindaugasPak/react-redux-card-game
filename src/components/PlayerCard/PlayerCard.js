@@ -1,46 +1,25 @@
 import React, { PropTypes } from 'react';
-import { InvitePlayerModal } from 'components';
 import styles from './PlayerCard.scss';
 
 const PlayerCard = ({
   playerName,
-  ready,
-  inviteLink,
-  friendInviteModal,
-  playerCardActions: {
-    openFriendInviteModal,
-    closeFriendInviteModal,
-  },
+  ready = false,
+  button = null,
+  showReady = true,
 }) => (
   <section className={styles.PlayerCard}>
     <div className={styles.PlayerCardAvatar} />
-    <h1 className={styles.PlayerCardName}>{ playerName || 'Waiting...' }</h1>
-    { inviteLink ? (
-      <div>
-        <button onClick={openFriendInviteModal}>Invite friend</button>
-        <InvitePlayerModal
-          inviteLink={inviteLink}
-          isOpen={friendInviteModal.isOpen}
-          onClose={closeFriendInviteModal}
-        />
-      </div>
-    ) : (
-      <div>{ ready ? 'Ready' : 'Not ready' }</div>
-    ) }
+    <h1 className={styles.PlayerCardName}>{ playerName }</h1>
+    <div>{ showReady && (ready ? 'Ready' : 'Not ready') }</div>
+    { button && button }
   </section>
 );
 
 PlayerCard.propTypes = {
-  playerName: PropTypes.string,
+  playerName: PropTypes.string.isRequired,
   ready: PropTypes.bool,
-  inviteLink: PropTypes.string,
-  friendInviteModal: PropTypes.shape({
-    isOpen: PropTypes.bool.isRequired,
-  }),
-  playerCardActions: PropTypes.shape({
-    openFriendInviteModal: PropTypes.func.isRequired,
-    closeFriendInviteModal: PropTypes.func.isRequired,
-  }),
+  button: PropTypes.node,
+  showReady: PropTypes.bool,
 };
 
 export default PlayerCard;

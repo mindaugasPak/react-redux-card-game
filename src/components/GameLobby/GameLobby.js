@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 
-import { PlayerCard } from 'components';
+import { PlayerCard, InvitePlayerModal } from 'components';
+
 import styles from './GameLobby.scss';
 
 const GameLobby = ({
@@ -11,33 +12,35 @@ const GameLobby = ({
   countdown,
   toggleReady,
   friendInviteModal,
-  playerCardActions,
+  playerCardActions: {
+    openFriendInviteModal,
+    closeFriendInviteModal,
+  },
 }) => (
   <div className={styles.Lobby}>
     <div style={{ width: '100%' }}>
       { countdown.countdownStarted ? <h1>{ countdown.countdownTime }</h1> : null }
       <section className={styles.LobbyVersus}>
-        <PlayerCard
-          playerName={player.name}
-          ready={player.ready}
-          friendInviteModal={friendInviteModal}
-          playerCardActions={playerCardActions}
-        />
+        <PlayerCard playerName={player.name} ready={player.ready} />
 
         <div className={styles.LobbyVersusText}>VS</div>
 
         { hasOpponent ? (
-          <PlayerCard
-            playerName={opponent.name}
-            ready={opponent.ready}
-            friendInviteModal={friendInviteModal}
-            playerCardActions={playerCardActions}
-          />
+          <PlayerCard playerName={opponent.name} ready={opponent.ready} />
         ) : (
           <PlayerCard
-            inviteLink={inviteLink}
-            friendInviteModal={friendInviteModal}
-            playerCardActions={playerCardActions}
+            playerName="Waiting..."
+            showReady={false}
+            button={
+              <div>
+                <button onClick={openFriendInviteModal}>Invite friend</button>
+                <InvitePlayerModal
+                  inviteLink={inviteLink}
+                  isOpen={friendInviteModal.isOpen}
+                  onClose={closeFriendInviteModal}
+                />
+              </div>
+            }
           />
         ) }
       </section>
