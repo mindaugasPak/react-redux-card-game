@@ -1,6 +1,7 @@
 export BoardSide from './BoardSide/BoardSide';
 export Card from './Card/Card';
 export CardBack from './CardBack/CardBack';
+export Countdown from './Countdown/Countdown';
 export GameLobby from './GameLobby/GameLobby';
 export Hand from './Hand/Hand';
 export Hero from './Hero/Hero';
