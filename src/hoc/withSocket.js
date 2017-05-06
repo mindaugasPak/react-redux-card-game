@@ -1,8 +1,5 @@
 import React, { PropTypes } from 'react';
-
-function getDisplayName(WrappedComponent) {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
-}
+import { getDisplayName } from 'helpers';
 
 const withSocket = (WrappedComponent) => {
   const withSocketDisplayName = `withSocket(${getDisplayName(WrappedComponent)})`;
