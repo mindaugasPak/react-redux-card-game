@@ -3,6 +3,7 @@ export App from './App/App';
 export DevTools from './DevTools/DevTools';
 export Board from './Board/Board';
 export BoardSideDropTarget from './BoardSideDropTarget/BoardSideDropTarget';
+export CountdownManager from './CountdownManager/CountdownManager';
 export CustomDragLayer from './CustomDragLayer/CustomDragLayer';
 export DraggableCard from './DraggableCard/DraggableCard';
 export DraggableMinion from './DraggableMinion/DraggableMinion';
