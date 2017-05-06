@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 
-import { PlayerCard, InvitePlayerModal } from 'components';
+import { CountdownManager } from 'containers';
+import { Countdown, PlayerCard, InvitePlayerModal } from 'components';
 
 import styles from './GameLobby.scss';
 
@@ -19,7 +20,12 @@ const GameLobby = ({
 }) => (
   <div className={styles.Lobby}>
     <div style={{ width: '100%' }}>
-      { countdown.countdownStarted ? <h1>{ countdown.countdownTime }</h1> : null }
+      { countdown.canCountdown &&
+        <CountdownManager startTime={5} onFinish={countdown.onFinish}>
+          { ({ time }) => <Countdown>{ time }</Countdown> }
+        </CountdownManager>
+      }
+
       <section className={styles.LobbyVersus}>
         <PlayerCard playerName={player.name} ready={player.ready} />
 
@@ -64,8 +70,8 @@ GameLobby.propTypes = {
   }).isRequired,
   inviteLink: PropTypes.string.isRequired,
   countdown: PropTypes.shape({
-    countdownStarted: PropTypes.bool.isRequired,
-    countdownTime: PropTypes.number.isRequired,
+    canCountdown: PropTypes.bool.isRequired,
+    onFinish: PropTypes.func.isRequired,
   }).isRequired,
   hasOpponent: PropTypes.bool.isRequired,
   toggleReady: PropTypes.func.isRequired,

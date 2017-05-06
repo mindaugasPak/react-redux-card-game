@@ -50,9 +50,8 @@ export class GameLobbyScreen extends Component {
   }
 
   state = {
-    countdownStarted: false,
-    countdownTime: 5,
-  };
+    canCountdown: true,
+  }
 
   componentDidMount = () => {
     this.joinGame(this.props);
@@ -65,9 +64,9 @@ export class GameLobbyScreen extends Component {
     }
 
     if (nextProps.player.ready && nextProps.opponent.ready) {
-      if (!this.state.countdownStarted) {
-        this.startCountdown();
-      }
+      this.startCountdown();
+    } else {
+      this.stopCountdown();
     }
   }
 
@@ -77,22 +76,14 @@ export class GameLobbyScreen extends Component {
     }
 
     this.removeOnPlayerJoinedListener(this.props);
-    clearInterval(this.countdownInterval);
   }
 
-  startCountdown = () => {
-    this.setState({ countdownStarted: true });
-    this.countdownInterval = setInterval(this.countDown, 1000);
-  }
+  startCountdown = () => this.setState(() => ({ canCountdown: true }));
+  stopCountdown = () => this.setState(() => ({ canCountdown: false }));
 
-  countDown = () => {
-    this.setState({ countdownTime: this.state.countdownTime - 1 });
-
-    if (this.state.countdownTime <= 0) {
-      this.startGame(this.props);
-      this.goInGame(this.props);
-      clearInterval(this.countdownInterval);
-    }
+  handleCountdownFinish = () => {
+    this.startGame(this.props);
+    this.goInGame(this.props);
   }
 
   notifyOnPlayerJoined = (props) => {
@@ -149,16 +140,18 @@ export class GameLobbyScreen extends Component {
   }
 
   render() {
+    const { canCountdown } = this.state;
     const { gameId } = this.props;
     const { createHref } = this.props.router;
     const { protocol, host } = window.location;
+    const countdown = { canCountdown, onFinish: this.handleCountdownFinish };
     const inviteLink = `${protocol}//${host}/${createHref(`/game/${gameId}/join`)}`;
 
     return (
       <GameLobby
         {...this.props}
         inviteLink={inviteLink}
-        countdown={this.state}
+        countdown={countdown}
         toggleReady={this.toggleReadyForPlayer}
       />
     );
