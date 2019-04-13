@@ -7,31 +7,31 @@ const cards = [
     mana: 6,
     attack: 9,
     defense: 9,
-    portrait: 'http://hydra-media.cursecdn.com/hearthstone.gamepedia.com/thumb/5/54/Anima_Golem_full.jpg/459px-Anima_Golem_full.jpg?version=1624263f4c524b56f97dd80fdd3d9bf2',
+    portrait: 'https://gamepedia.cursecdn.com/hearthstone_gamepedia/thumb/5/54/Anima_Golem_full.jpg/800px-Anima_Golem_full.jpg?version=7437eef5b21f16880095d423c5dd625c',
   }, {
     name: 'Abusive Sergeant',
     mana: 1,
     attack: 2,
     defense: 1,
-    portrait: 'http://hydra-media.cursecdn.com/hearthstone.gamepedia.com/thumb/1/18/Abusive_Sergeant_full.jpg/587px-Abusive_Sergeant_full.jpg?version=80b05953c8897d68d12706490c8ab68d',
+    portrait: 'https://gamepedia.cursecdn.com/hearthstone_gamepedia/thumb/1/18/Abusive_Sergeant_full.jpg/800px-Abusive_Sergeant_full.jpg?version=bb07b0c546ff1bf22d6df6692ca901b7',
   }, {
     name: 'Acolyte of Pain',
     mana: 3,
     attack: 1,
     defense: 3,
-    portrait: 'http://hydra-media.cursecdn.com/hearthstone.gamepedia.com/thumb/e/e0/Acolyte_of_Pain_full.jpg/350px-Acolyte_of_Pain_full.jpg?version=ea71ea7aef056d51f01800584e74c1bb',
+    portrait: 'https://gamepedia.cursecdn.com/hearthstone_gamepedia/thumb/e/e0/Acolyte_of_Pain_full.jpg/800px-Acolyte_of_Pain_full.jpg?version=6939e4390550ac8ad439fe3ec10801aa',
   }, {
     name: 'Azure Drake',
     mana: 5,
     attack: 4,
     defense: 4,
-    portrait: 'http://hydra-media.cursecdn.com/hearthstone.gamepedia.com/thumb/6/64/Azure_Drake_full.jpg/782px-Azure_Drake_full.jpg?version=6104b0c3caf640057fb10ca860778635',
+    portrait: 'https://gamepedia.cursecdn.com/hearthstone_gamepedia/thumb/6/64/Azure_Drake_full.jpg/1044px-Azure_Drake_full.jpg?version=6148ac22295debcac9842a8f04fcce67',
   }, {
-    name: 'Rare Parrot',
-    mana: 10,
-    attack: 0,
-    defense: 10,
-    portrait: 'http://i.imgur.com/PYe4A3T.gif',
+    name: 'Bloodsail Cultist',
+    mana: 3,
+    attack: 3,
+    defense: 4,
+    portrait: 'https://gamepedia.cursecdn.com/hearthstone_gamepedia/thumb/5/5a/Bloodsail_Cultist_full.jpg/800px-Bloodsail_Cultist_full.jpg?version=d481aedc14df7e0a7f312ef36ac89703',
   }, {
     name: 'James Kappa',
     mana: 3,
@@ -50,7 +50,7 @@ cardsByName['the coin'] = {
   mana: 0,
   attack: 0,
   defense: 0,
-  portrait: 'https://hydra-media.cursecdn.com/hearthstone.gamepedia.com/a/a9/The_Coin_full.jpg',
+  portrait: 'https://gamepedia.cursecdn.com/hearthstone_gamepedia/thumb/a/a9/The_Coin_full.jpg/800px-The_Coin_full.jpg?version=b9c5e239728aed0018bd75c3333271c9',
 };
 
 export default function newCardByName(name = '') {
